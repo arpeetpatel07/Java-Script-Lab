@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Styling Demonstration</title>
+    
+    <!-- 1. INTERNAL CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .section-box {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .internal-title {
+            color: #2c3e50;
+            font-size: 24px;
+        }
+        .internal-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Combined container to group the external block and the name beneath it */
+        .external-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .external-group .section-box {
+            margin-bottom: 8px; /* Reduced gap between the block and the text below */
+        }
+        
+        /* Small student credits block aligned right underneath the block */
+        .student-credits-small {
+            text-align: right;
+            font-size: 13px;
+            padding-right: 5px;
+            line-height: 1.4;
+        }
+        .student-name {
+            font-weight: bold;
+            color: #555;
+        }
+        .student-prn {
+            color: #7f8c8d;
+        }
+    </style>
+
+    <!-- 3. EXTERNAL CSS SIMULATION -->
+    <style>
+        .ext-title {
+            color: #27ae60;
+            font-size: 24px;
+        }
+        .ext-btn {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: INTERNAL CSS -->
+    <div class="section-box">
+        <h2 class="internal-title">Internal css example</h2>
+        <p>This section is styled using rules defined in the head section of this document.</p>
+        <a href="#" class="internal-btn">Click Here</a>
+    </div>
+
+    <!-- SECTION 2: INLINE CSS -->
+    <div style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h2 style="color: #e67e22; font-size: 24px; margin-top: 0;">Inline Css</h2>
+        <p style="color: #555; font-size: 16px;">this page was made using inline css</p>
+        <a href="#" style="display: inline-block; background-color: #e67e22; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">Click Here</a>
+    </div>
+
+    <!-- EXTERNAL CSS CONTAINER GROUP -->
+    <div class="external-group">
+        <!-- SECTION 3: EXTERNAL CSS -->
+        <div class="section-box">
+            <h2 class="ext-title">External Css</h2>
+            <p>This section links to an external file. For this demo code block, the external rule is simulated at the top of the file.</p>
+            <a href="#" class="ext-btn">Click Here</a>
+        </div>
+
+        <!-- SMALL STUDENT CREDITS RIGHT BELOW -->
+        <div class="student-credits-small">
+            <span class="student-name">Arpeet Patel</span> | 
+            <span class="student-prn">PRN: 24070521218</span>
+        </div>
+    </div>
+
+</body>
+</html>
