@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Verification Engine</title>
+    <style>
+        /* Classic Corporate Minimalist Design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            max-width: 550px;
+            width: 100%;
+            position: relative; /* Enables absolute tracking for bottom-right alignment */
+            padding-bottom: 60px; /* Leaves clear breathing space for your name */
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input {
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            border-color: #0f172a;
+            box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.08);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-check {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        .btn-check:hover {
+            background-color: #1e293b;
+        }
+
+        .btn-clear {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-clear:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Dynamic Result Area Styles */
+        .result-box {
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: none;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+        }
+
+        .result-box.success {
+            display: block;
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .result-box.failure {
+            display: block;
+            background-color: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .result-box.error {
+            display: block;
+            background-color: #fffbeb;
+            border-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .details {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #475569;
+            margin-top: 6px;
+            font-family: monospace;
+        }
+
+        /* Strict Bottom-Right Absolute Alignment Boundary */
+        .signature-tag {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            background-color: #f8fafc;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: right;
+        }
+
+        .signature-tag span {
+            color: #6366f1;
+            font-weight: 700;
+        }
+
+        @media (max-width: 500px) {
+            .card { padding: 24px; padding-bottom: 70px; }
+            .button-group { flex-direction: column; }
+            .signature-tag { right: 24px; left: 24px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Symmetry Analysis Engine</h2>
+        <div class="subtitle">Enter any text phrase, word, or number sequence below.</div>
+
+        <!-- Input Processing Layer -->
+        <div class="form-group">
+            <label for="sequenceInput">Target Value Input</label>
+            <input type="text" id="sequenceInput" placeholder="e.g., Radar, 12321, or Madam" autocomplete="off">
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-check" onclick="evaluateSymmetry()">Analyze</button>
+            <button class="btn btn-clear" onclick="clearDisplay()">Reset</button>
+        </div>
+
+        <!-- System Output Notification Display -->
+        <div id="outputDisplay" class="result-box"></div>
+
+        <!-- Target Identification Signature: Anchored Right Bottom -->
+        <div class="signature-tag">
+            <span>Arpeet Patel</span> ; PRN: 24070521218
+        </div>
+    </div>
+
+    <script>
+        function evaluateSymmetry() {
+            const userInput = document.getElementById('sequenceInput').value;
+            const outputDisplay = document.getElementById('outputDisplay');
+
+            // 1. Guard check for completely empty field string space properties
+            if (!userInput.trim()) {
+                outputDisplay.className = "result-box error";
+                outputDisplay.innerHTML = "Processing Error: Input parameter cannot be left empty.";
+                return;
+            }
+
+            // 2. Normalization Engine: Clears spaces, symbols, and switches everything to uniform lower-case
+            const normalizedString = userInput.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+            // 3. Fallback boundary evaluation checking if filtering removed all characters
+            if (normalizedString.length === 0) {
+                outputDisplay.className = "result-box error";
+                outputDisplay.innerHTML = "Processing Error: No readable numbers or letters found.";
+                return;
+            }
+
+            // 4. Inversion Array Logic
+            const reversedString = normalizedString.split('').reverse().join('');
+            const matchingResult = (normalizedString === reversedString);
+
+            // 5. Interface Mutation Processing Mapping
+            if (matchingResult) {
+                outputDisplay.className = "result-box success";
+                outputDisplay.innerHTML = `
+                    ✓ SUCCESS: Valid Palindrome Match
+                    <div class="details">Cleaned Sequence: "${normalizedString}" matches inverted state perfectly.</div>
+                `;
+            } else {
+                outputDisplay.className = "result-box failure";
+                outputDisplay.innerHTML = `
+                    ✗ FAILED: Structural Symmetry Mismatch
+                    <div class="details">Cleaned: "${normalizedString}" vs Reversed: "${reversedString}"</div>
+                `;
+            }
+        }
+
+        // Framework UI clearance control
+        function clearDisplay() {
+            document.getElementById('sequenceInput').value = '';
+            document.getElementById('outputDisplay').style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
