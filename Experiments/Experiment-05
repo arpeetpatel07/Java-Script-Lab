@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Total Calculator with Discount Logic</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Cart page specific styles */
+        .cart-page {
+            background-color: #eef2f3;
+        }
 
+        .cart-container {
+            background-color: #ffffff;
+            width: 520px;
+            max-width: 95%;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .cart-container h1 {
+            color: #1a1c1e;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .cart-container .subtitle {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+
+        .cart-item .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item .item-name {
+            font-weight: bold;
+            color: #1a1c1e;
+        }
+
+        .cart-item .item-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .cart-item .item-total {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .summary {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .summary .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .summary .row.discount {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .summary .row.total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1c1e;
+            border-top: 1px solid #bbf7d0;
+            margin-top: 6px;
+            padding-top: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .controls input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .controls button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            height: auto;
+            width: auto;
+        }
+
+        .controls button:hover {
+            filter: brightness(0.9);
+        }
+
+        .promo-message {
+            min-height: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .promo-message.valid {
+            color: #15803d;
+        }
+
+        .promo-message.invalid {
+            color: #dc2626;
+        }
+
+        /* Bottom-right credit footer */
+        .credit-footer {
+            position: fixed;
+            bottom: 12px;
+            right: 16px;
+            font-size: 13px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 6px 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-weight: bold;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="cart-page">
+
+    <div class="cart-container">
+        <h1>🛒 Cart Total Calculator</h1>
+        <p class="subtitle">Built with Array Methods &amp; Object Handling</p>
+
+        <div class="cart-items" id="cartItems"></div>
+
+        <div class="summary" id="summary">
+            <div class="row"><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
+            <div class="row discount"><span>Discount</span><span id="discount">-₹0.00</span></div>
+            <div class="row total"><span>Final Total</span><span id="grandTotal">₹0.00</span></div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="promoInput" placeholder="Enter promo code (SAVE10)">
+            <button onclick="applyPromo()">Apply</button>
+        </div>
+        <div class="promo-message" id="promoMsg"></div>
+        <button onclick="resetCart()" style="background-color:#dc2626; color:#fff; border:none; padding:10px 18px; border-radius:6px; cursor:pointer; font-weight:bold;">Reset / Clear Promo</button>
+    </div>
+
+    <!-- Credit Footer at bottom-right -->
+    <div class="credit-footer">Arpeet Patel &nbsp;|&nbsp; PRN: 24070521218</div>
+
+    <script>
+        // ============================================================
+        // OBJECT HANDLING: Cart stored as an array of product objects
+        // ============================================================
+        const cart = [
+            { id: 1, name: "Wireless Mouse",   price: 499,   quantity: 2, category: "electronics" },
+            { id: 2, name: "Mechanical Keyboard", price: 1299, quantity: 1, category: "electronics" },
+            { id: 3, name: "USB-C Cable",      price: 199,   quantity: 3, category: "accessories" },
+            { id: 4, name: "Laptop Stand",     price: 899,   quantity: 1, category: "accessories" },
+            { id: 5, name: "Desk Lamp",        price: 749,   quantity: 1, category: "home" }
+        ];
+
+        // Promo code configurations (object handling)
+        const promoCodes = {
+            SAVE10: 0.10, // 10% off on subtotal
+            SAVE20: 0.20  // 20% off on subtotal
+        };
+
+        let appliedPromo = "";
+        let promoValid = false;
+
+        // ============================================================
+        // ARRAY METHODS + OBJECT HANDLING
+        // ============================================================
+
+        // 1. map() + object dot access: compute each item's line total
+        function getLineTotals() {
+            return cart.map(item => ({
+                ...item,
+                lineTotal: item.price * item.quantity
+            }));
+        }
+
+        // 2. reduce(): compute the subtotal from all line totals
+        function getSubtotal(itemsWithTotals) {
+            return itemsWithTotals.reduce(
+                (sum, item) => sum + item.lineTotal,
+                0
+            );
+        }
+
+        // 3. filter(): get items eligible for a category-based discount
+        function getCategoryDiscount(itemsWithTotals) {
+            // 5% extra off on all 'electronics' items (object property handling)
+            const electronics = itemsWithTotals.filter(item => item.category === "electronics");
+            const electronicsValue = electronics.reduce(
+                (sum, item) => sum + item.lineTotal,
+                0
+            );
+            return electronicsValue * 0.05;
+        }
+
+        // 4. Object.keys() + Object.values(): work with promo code object
+        function applyPromo() {
+            const input = document.getElementById("promoInput").value.trim().toUpperCase();
+            const promoMsg = document.getElementById("promoMsg");
+
+            if (promoCodes.hasOwnProperty(input)) {
+                appliedPromo = input;
+                promoValid = true;
+                promoMsg.className = "promo-message valid";
+                promoMsg.innerText = `Promo '${input}' applied! You get ${promoCodes[input] * 100}% off.`;
+            } else {
+                appliedPromo = "";
+                promoValid = false;
+                promoMsg.className = "promo-message invalid";
+                promoMsg.innerText = "Invalid promo code. Try SAVE10 or SAVE20.";
+            }
+            renderCart();
+        }
+
+        // Reset cart quantities back and clear promo
+        function resetCart() {
+            cart.forEach((item, index) => {
+                cart[index].quantity = [2, 1, 3, 1, 1][index];
+            });
+            appliedPromo = "";
+            promoValid = false;
+            document.getElementById("promoInput").value = "";
+            document.getElementById("promoMsg").className = "promo-message";
+            document.getElementById("promoMsg").innerText = "";
+            renderCart();
+        }
+
+        // ============================================================
+        // RENDER: Build the UI
+        // ============================================================
+        function renderCart() {
+            const itemsWithTotals = getLineTotals();
+            const subtotal = getSubtotal(itemsWithTotals);
+
+            // Category-based discount (always applied)
+            const categoryDiscount = getCategoryDiscount(itemsWithTotals);
+
+            // Promo-code discount (if valid)
+            const promoRate = promoValid ? promoCodes[appliedPromo] : 0;
+            const promoDiscount = subtotal * promoRate;
+
+            // Total discount = category discount + promo discount
+            const totalDiscount = categoryDiscount + promoDiscount;
+            const grandTotal = subtotal - totalDiscount;
+
+            // Render each cart item using map() + object destructuring
+            const cartItemsDiv = document.getElementById("cartItems");
+            cartItemsDiv.innerHTML = itemsWithTotals.map(({ name, price, quantity, lineTotal, category }) => `
+                <div class="cart-item">
+                    <span class="item-info">
+                        <span class="item-name">${name} <span style="font-size:11px;color:#9ca3af;">(${category})</span></span>
+                        <span class="item-meta">₹${price} × ${quantity}</span>
+                    </span>
+                    <span class="item-total">₹${lineTotal.toFixed(2)}</span>
+                </div>
+            `).join("");
+
+            // Update summary (object handling with toFixed for money)
+            document.getElementById("subtotal").innerText = `₹${subtotal.toFixed(2)}`;
+            document.getElementById("discount").innerText = `-₹${totalDiscount.toFixed(2)}`;
+            document.getElementById("grandTotal").innerText = `₹${grandTotal.toFixed(2)}`;
+        }
+
+        // Initial render
+        renderCart();
+    </script>
+</body>
+</html>
