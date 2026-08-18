@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript String Operations</title>
+  <style>
+    :root {
+      --bg-1: #f8fafc;
+      --bg-2: #eef2ff;
+      --panel: rgba(255, 255, 255, 0.9);
+      --panel-light: rgba(248, 250, 252, 0.96);
+      --accent: #7c3aed;
+      --accent-2: #22c55e;
+      --accent-3: #2563eb;
+      --text: #0f172a;
+      --muted: #475569;
+      --danger: #ef4444;
+      --shadow: 0 22px 45px rgba(148, 163, 184, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 30%, #eef2ff 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-3);
+    }
+
+    .identity {
+      text-align: right;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .identity h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .identity p {
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(37, 99, 235, 0.08));
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #bbf7d0;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.12;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 780px;
+      margin-top: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      font-size: 1.45rem;
+      color: var(--text);
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .card ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .code-box {
+      margin-top: 12px;
+      background: #f8fafc;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      padding: 14px;
+      font-family: Consolas, monospace;
+      color: #4f46e5;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .examples {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .method {
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .method h3 {
+      margin: 0 0 10px;
+      color: var(--accent-3);
+      font-size: 1rem;
+    }
+
+    .method p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
+
+    .programs {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 22px;
+    }
+
+    .program-box {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .program-box h3 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: #ffffff;
+      color: var(--text);
+      font: inherit;
+    }
+
+    input, textarea {
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      border: none;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 15px 30px rgba(124, 58, 237, 0.2);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 35px rgba(124, 58, 237, 0.32);
+    }
+
+    .result {
+      margin-top: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 14px;
+      color: #166534;
+      min-height: 52px;
+      line-height: 1.6;
+    }
+
+    .accent {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .page {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">StringOps Lab</div>
+      <div class="identity">
+        <h3>ARPEET PATEL</h3>
+        <p>PRN: 24070521218</p>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">JavaScript Practice</div>
+      <h1>String Operations in JavaScript</h1>
+      <p>
+        Strings are one of the most useful data types in JavaScript. They let us store text,
+        search within text, change content, and perform many operations such as slicing,
+        replacing, splitting, and counting characters.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>a) Basics of Strings</h2>
+        <ul>
+          <li>A string is a sequence of characters enclosed in single or double quotes.</li>
+          <li>It supports operations like length, concatenation, slicing, and searching.</li>
+          <li>Example: <span class="accent">"Hello"</span> has a length of 5.</li>
+        </ul>
+        <div class="code-box">let name = "JavaScript";
+console.log(name.length); // 10
+console.log(name + " is fun");
+console.log(name[0]); // J</div>
+      </section>
+
+      <section class="card">
+        <h2>b) Working with Strings</h2>
+        <p>Common string methods help us manipulate text quickly and efficiently.</p>
+        <div class="examples">
+          <div class="method">
+            <h3>substring()</h3>
+            <p>Extracts a part of a string.</p>
+          </div>
+          <div class="method">
+            <h3>indexOf()</h3>
+            <p>Finds the position of a substring.</p>
+          </div>
+          <div class="method">
+            <h3>split()</h3>
+            <p>Breaks a string into an array using a separator.</p>
+          </div>
+          <div class="method">
+            <h3>replace()</h3>
+            <p>Replaces a matched value with another string.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="programs">
+      <section class="program-box">
+        <h3>1. Reverse a String</h3>
+        <label for="reverseInput">Enter a string</label>
+        <input id="reverseInput" type="text" value="JavaScript" placeholder="Enter text here" />
+        <button onclick="reverseStringDemo()">Reverse String</button>
+        <div class="result" id="reverseResult">Result will appear here.</div>
+      </section>
+
+      <section class="program-box">
+        <h3>2. Count Vowels in a Paragraph</h3>
+        <label for="vowelInput">Type a paragraph</label>
+        <textarea id="vowelInput" placeholder="Write a paragraph here...">This is a smart JavaScript website for learning string operations in a practical and interactive way.</textarea>
+        <button onclick="countVowelsDemo()">Count Vowels</button>
+        <div class="result" id="vowelResult">Result will appear here.</div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function reverseStringDemo() {
+      const input = document.getElementById('reverseInput').value;
+      const reversed = input.split('').reverse().join('');
+      document.getElementById('reverseResult').innerHTML = `Original: <span class="accent">${input}</span><br>Reversed: <span class="accent">${reversed}</span>`;
+    }
+
+    function countVowelsDemo() {
+      const text = document.getElementById('vowelInput').value;
+      const vowels = 'aeiouAEIOU';
+      let count = 0;
+
+      for (let i = 0; i < text.length; i++) {
+        if (vowels.includes(text[i])) {
+          count++;
+        }
+      }
+
+      document.getElementById('vowelResult').innerHTML = `The paragraph contains <span class="accent">${count}</span> vowels.`;
+    }
+
+    function showMethodExamples() {
+      const text = 'JavaScript is powerful';
+      console.log(text.substring(0, 10));
+      console.log(text.indexOf('power'));
+      console.log(text.split(' '));
+      console.log(text.replace('powerful', 'awesome'));
+    }
+
+    showMethodExamples();
+  </script>
+</body>
+</html>
