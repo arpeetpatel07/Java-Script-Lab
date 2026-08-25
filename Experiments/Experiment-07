@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DOM Traversal Lab | Experiment 7</title>
+	<style>
+		:root {
+			--ink: #1d2733;
+			--muted: #718093;
+			--line: #e5eaf0;
+			--paper: #ffffff;
+			--wash: #f5f7fa;
+			--blue: #2e6fd8;
+			--blue-soft: #eaf2ff;
+			--green: #2c9b70;
+			--green-soft: #e8f7f0;
+			--orange: #d78328;
+			--orange-soft: #fff4e5;
+			--shadow: 0 18px 50px rgba(40, 57, 76, 0.09);
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			background: linear-gradient(135deg, #f4f7fb 0%, #ffffff 48%, #eef3f8 100%);
+			font-family: "Segoe UI", Tahoma, sans-serif;
+			min-height: 100vh;
+		}
+
+		.page { max-width: 1220px; margin: 0 auto; padding: 44px 34px 92px; }
+		.topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; margin-bottom: 38px; }
+		.eyebrow { color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 13px; }
+		h1 { font-family: Georgia, serif; font-size: clamp(32px, 5vw, 54px); letter-spacing: 0; line-height: 1.05; margin: 0; max-width: 690px; }
+		.subtitle { color: var(--muted); font-size: 16px; line-height: 1.6; margin: 16px 0 0; max-width: 620px; }
+		.lab-chip { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); color: var(--muted); font-size: 13px; line-height: 1.6; padding: 14px 17px; min-width: 170px; }
+		.lab-chip strong { color: var(--ink); display: block; font-size: 19px; }
+
+		.dashboard { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, .75fr); gap: 22px; }
+		.panel { background: rgba(255, 255, 255, .88); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 27px; }
+		.panel-heading { align-items: center; display: flex; justify-content: space-between; gap: 16px; margin-bottom: 21px; }
+		h2 { font-family: Georgia, serif; font-size: 25px; margin: 0; }
+		.count { background: var(--blue-soft); border-radius: 99px; color: var(--blue); font-size: 12px; font-weight: 700; padding: 7px 11px; }
+		.task-form { display: flex; gap: 10px; margin-bottom: 22px; }
+		.task-form input { background: #fbfcfd; border: 1px solid #dbe2ea; border-radius: 7px; color: var(--ink); flex: 1; font: inherit; min-width: 0; padding: 13px 14px; outline: none; }
+		.task-form input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+		button { border: 0; border-radius: 7px; cursor: pointer; font: inherit; font-weight: 700; transition: transform .2s, box-shadow .2s, background .2s; }
+		button:active { transform: translateY(1px); }
+		.add-btn { background: var(--blue); color: white; padding: 0 20px; }
+		.add-btn:hover { background: #215ebd; box-shadow: 0 5px 14px rgba(46, 111, 216, .25); }
+		.task-list { display: grid; gap: 10px; list-style: none; margin: 0; padding: 0; }
+		.task-item { align-items: center; background: var(--wash); border: 1px solid transparent; border-radius: 8px; display: flex; gap: 13px; justify-content: space-between; min-height: 61px; padding: 11px 12px 11px 16px; }
+		.task-item:hover { background: white; border-color: var(--line); }
+		.task-copy { align-items: center; display: flex; gap: 12px; min-width: 0; }
+		.task-copy span { overflow-wrap: anywhere; }
+		.task-check { accent-color: var(--green); height: 17px; width: 17px; }
+		.task-item.done .task-copy span { color: var(--muted); text-decoration: line-through; }
+		.actions { display: flex; flex-shrink: 0; gap: 7px; }
+		.icon-btn { background: white; border: 1px solid var(--line); color: var(--muted); font-size: 13px; padding: 8px 10px; }
+		.icon-btn:hover { color: var(--blue); border-color: #b9cff2; }
+		.delete-btn:hover { color: #c55b5b; border-color: #efc9c9; }
+		.empty { color: var(--muted); font-size: 14px; padding: 18px 0 4px; text-align: center; }
+
+		.status-list { display: grid; gap: 9px; list-style: none; margin: 0; padding: 0; }
+		.status-row { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 10px; justify-content: space-between; padding: 12px 0; }
+		.status-row:last-child { border-bottom: 0; }
+		.status-name { align-items: flex-start; display: flex; gap: 10px; font-size: 14px; }
+		.status-copy { display: grid; gap: 3px; }
+		.status-detail { color: var(--muted); font-size: 12px; line-height: 1.35; }
+		.dot { border-radius: 50%; height: 9px; width: 9px; }
+		.completed .dot { background: var(--green); } .ongoing .dot { background: var(--orange); } .pending .dot { background: #bcc6d1; }
+		.status-label { border-radius: 5px; font-size: 11px; font-weight: 700; padding: 5px 8px; text-transform: uppercase; }
+		.completed .status-label { background: var(--green-soft); color: var(--green); } .ongoing .status-label { background: var(--orange-soft); color: var(--orange); } .pending .status-label { background: #f0f2f5; color: var(--muted); }
+		.dom-note { background: #f8fafc; border-left: 3px solid var(--blue); color: var(--muted); font-size: 13px; line-height: 1.55; margin-top: 24px; padding: 13px 15px; }
+		.dom-note strong { color: var(--ink); display: block; margin-bottom: 3px; }
+		.footer { bottom: 20px; color: #7f8b98; font-size: 12px; position: fixed; right: 26px; text-align: right; }
+		.footer strong { color: var(--ink); display: block; font-size: 13px; }
+		@media (max-width: 760px) { .page { padding: 28px 17px 100px; } .topbar { flex-direction: column; margin-bottom: 26px; } .lab-chip { min-width: 0; } .dashboard { grid-template-columns: 1fr; } .panel { padding: 20px; } .task-form { flex-direction: column; } .add-btn { min-height: 45px; } .footer { bottom: 12px; right: 14px; } }
+	</style>
+</head>
+<body>
+	<main class="page">
+		<header class="topbar">
+			<div>
+				<p class="eyebrow">Web Development Lab / Practical 07</p>
+				<h1>DOM traversal, made tangible.</h1>
+				<p class="subtitle">A focused workspace for adding, editing, completing, and removing tasks through live DOM updates.</p>
+			</div>
+			<div class="lab-chip"><strong>Experiment 07</strong>Interactive DOM operations</div>
+		</header>
+
+		<section class="dashboard" aria-label="Experiment dashboard">
+			<section class="panel" aria-labelledby="todo-title">
+				<div class="panel-heading"><h2 id="todo-title">Today&apos;s tasks</h2><span class="count" id="taskCount">0 tasks</span></div>
+				<form class="task-form" id="taskForm">
+					<input id="taskInput" type="text" placeholder="What needs to be done?" aria-label="New task" maxlength="100" autocomplete="off">
+					<button class="add-btn" type="submit">Add task</button>
+				</form>
+				<ul class="task-list" id="taskList" aria-live="polite"></ul>
+				<p class="empty" id="emptyMessage">Your list is clear. Add your first task above.</p>
+				<div class="dom-note"><strong>Live DOM activity</strong><span id="domMessage">Waiting for an action. New nodes will appear inside the list.</span></div>
+			</section>
+
+			<aside class="panel" aria-labelledby="progress-title">
+				<div class="panel-heading"><h2 id="progress-title">Lab progress</h2><span class="count">10 total</span></div>
+				<ul class="status-list">
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 1</strong><span class="status-detail">JavaScript styles, console methods, and welcome message</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 2</strong><span class="status-detail">Variables, template literals, destructuring, and billing calculator</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 3</strong><span class="status-detail">Control structures and marks-based form validation</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 4</strong><span class="status-detail">Functions, scope, closures, try-catch, and palindrome checker</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 5</strong><span class="status-detail">Array methods, objects, discounts, and cart total calculator</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row completed"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 6</strong><span class="status-detail">String functions, regex, email validation, and text analysis</span></span></span><span class="status-label">Completed</span></li>
+					<li class="status-row ongoing"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 7</strong><span class="status-detail">DOM traversal and updates with an interactive to-do list</span></span></span><span class="status-label">Ongoing</span></li>
+					<li class="status-row pending"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 8</strong><span class="status-detail">Event-driven form fields and live gym admission validation</span></span></span><span class="status-label">Yet to do</span></li>
+					<li class="status-row pending"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 9</strong><span class="status-detail">localStorage, sessionStorage, and saved theme preferences</span></span></span><span class="status-label">Yet to do</span></li>
+					<li class="status-row pending"><span class="status-name"><i class="dot"></i><span class="status-copy"><strong>Experiment 10</strong><span class="status-detail">JSON fetch, jQuery getJSON, and dynamic data tables</span></span></span><span class="status-label">Yet to do</span></li>
+				</ul>
+			</aside>
+		</section>
+	</main>
+
+	<footer class="footer"><strong>ARPEET PATEL</strong>PRN: 24070521218</footer>
+
+	<script>
+		const taskForm = document.getElementById('taskForm');
+		const taskInput = document.getElementById('taskInput');
+		const taskList = document.getElementById('taskList');
+		const taskCount = document.getElementById('taskCount');
+		const emptyMessage = document.getElementById('emptyMessage');
+		const domMessage = document.getElementById('domMessage');
+
+		function updateSummary(message) {
+			const total = taskList.children.length;
+			const completed = taskList.querySelectorAll('.task-item.done').length;
+			taskCount.textContent = `${total} ${total === 1 ? 'task' : 'tasks'}`;
+			emptyMessage.hidden = total > 0;
+			if (message) domMessage.textContent = `${message} List: ${completed}/${total} complete.`;
+		}
+
+		function createTask(text) {
+			const item = document.createElement('li');
+			item.className = 'task-item';
+			item.innerHTML = `<label class="task-copy"><input class="task-check" type="checkbox"><span></span></label><div class="actions"><button class="icon-btn edit-btn" type="button">Edit</button><button class="icon-btn delete-btn" type="button">Delete</button></div>`;
+			item.querySelector('span').textContent = text;
+			item.querySelector('.task-check').addEventListener('change', (event) => {
+				item.classList.toggle('done', event.target.checked);
+				updateSummary('Updated task completion through a child node.');
+			});
+			item.querySelector('.edit-btn').addEventListener('click', () => {
+				const textNode = item.querySelector('span');
+				const nextText = window.prompt('Update task:', textNode.textContent);
+				if (nextText && nextText.trim()) { textNode.textContent = nextText.trim(); updateSummary('Traversed to the task text and updated it.'); }
+			});
+			item.querySelector('.delete-btn').addEventListener('click', () => { item.remove(); updateSummary('Removed the selected list item from the DOM.'); });
+			return item;
+		}
+
+		taskForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const text = taskInput.value.trim();
+			if (!text) return;
+			taskList.appendChild(createTask(text));
+			taskInput.value = '';
+			taskInput.focus();
+			updateSummary('Created a new element and appended it to the list.');
+		});
+
+		updateSummary();
+	</script>
+</body>
+</html>
