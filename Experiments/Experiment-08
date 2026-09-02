@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EliteFit Gym | Admission Form</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "DM Sans", sans-serif;
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at top left, #fffdf8 0%, transparent 35%),
+            radial-gradient(circle at bottom right, #eee6d8 0%, transparent 30%),
+            #f7f4ed;
+        color: #302c26;
+        padding: 45px 20px 80px;
+    }
+
+    /* Main Card */
+    .main-card {
+        max-width: 850px;
+        margin: auto;
+        background: rgba(255, 253, 248, 0.95);
+        border: 1px solid #e5ddcf;
+        border-radius: 28px;
+        box-shadow:
+            0 25px 70px rgba(70, 58, 40, 0.12),
+            0 4px 15px rgba(70, 58, 40, 0.05);
+        overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+        background: linear-gradient(135deg, #eee7da, #faf8f2);
+        text-align: center;
+        padding: 45px 30px 35px;
+        border-bottom: 1px solid #e5ddcf;
+    }
+
+    .logo {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        background: #fffdf8;
+        border: 1px solid #d8cbb8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 8px 20px rgba(70, 58, 40, 0.10);
+    }
+
+    .header h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 38px;
+        letter-spacing: 1px;
+        color: #28231d;
+    }
+
+    .header p {
+        margin-top: 9px;
+        color: #766d61;
+        font-size: 15px;
+    }
+
+    .tagline {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 7px 18px;
+        border-radius: 30px;
+        background: #e7dccb;
+        color: #625542;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    /* Form */
+    form {
+        padding: 38px 45px 45px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 10px 0 22px;
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        color: #3a332b;
+    }
+
+    .section-title span {
+        width: 8px;
+        height: 25px;
+        border-radius: 10px;
+        background: #b79d77;
+        display: inline-block;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .full {
+        grid-column: 1 / -1;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #514a41;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        border: 1px solid #dcd2c2;
+        border-radius: 12px;
+        padding: 14px 15px;
+        background: #fffefa;
+        color: #332f29;
+        font-size: 14px;
+        font-family: inherit;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #aaa298;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+        border-color: #c9b79d;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #ad9470;
+        box-shadow: 0 0 0 4px rgba(183, 157, 119, 0.13);
+        background: #ffffff;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 95px;
+    }
+
+    /* Validation */
+    .valid {
+        border-color: #88a789 !important;
+        background: #f7fbf6 !important;
+    }
+
+    .invalid {
+        border-color: #c88c83 !important;
+        background: #fff8f6 !important;
+    }
+
+    .message {
+        display: block;
+        min-height: 17px;
+        margin-top: 6px;
+        font-size: 12px;
+        padding-left: 3px;
+    }
+
+    .success {
+        color: #658064;
+    }
+
+    .error {
+        color: #a55d54;
+    }
+
+    /* Gender */
+    .gender-box {
+        display: flex;
+        gap: 12px;
+    }
+
+    .gender-option {
+        flex: 1;
+    }
+
+    .gender-option input {
+        display: none;
+    }
+
+    .gender-option label {
+        cursor: pointer;
+        margin: 0;
+        padding: 13px;
+        border: 1px solid #dcd2c2;
+        border-radius: 11px;
+        text-align: center;
+        background: #fffefa;
+        color: #655e54;
+        transition: 0.25s;
+    }
+
+    .gender-option input:checked + label {
+        background: #e9dfd0;
+        border-color: #b79d77;
+        color: #493d2d;
+        font-weight: 700;
+    }
+
+    /* Button */
+    .submit-btn {
+        width: 100%;
+        margin-top: 10px;
+        padding: 16px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient(135deg, #554b3d, #332e27);
+        color: #fffdf8;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(54, 46, 36, 0.18);
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(54, 46, 36, 0.25);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Result */
+    #result {
+        display: none;
+        margin-top: 20px;
+        padding: 16px;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .success-box {
+        display: block !important;
+        background: #edf6ed;
+        border: 1px solid #bdd3bd;
+        color: #4e704e;
+        animation: appear 0.4s ease;
+    }
+
+    @keyframes appear {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Student Footer */
+    .student-info {
+        position: fixed;
+        right: 22px;
+        bottom: 16px;
+        text-align: right;
+        color: #5e5549;
+        font-size: 12px;
+        line-height: 1.6;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        background: rgba(255, 253, 248, 0.88);
+        padding: 8px 13px;
+        border: 1px solid #ded5c8;
+        border-radius: 9px;
+        box-shadow: 0 5px 15px rgba(70, 58, 40, 0.08);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+
+        body {
+            padding: 20px 12px 90px;
+        }
+
+        .header {
+            padding: 35px 20px 30px;
+        }
+
+        .header h1 {
+            font-size: 29px;
+        }
+
+        form {
+            padding: 30px 22px;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .full {
+            grid-column: auto;
+        }
+
+        .gender-box {
+            flex-direction: column;
+        }
+
+        .student-info {
+            right: 10px;
+            bottom: 10px;
+            font-size: 10px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="main-card">
+
+    <!-- Header -->
+    <div class="header">
+
+        <div class="logo">🏋️</div>
+
+        <h1>EliteFit Gym</h1>
+
+        <p>Begin your journey towards a stronger, healthier you.</p>
+
+        <div class="tagline">
+            Membership Registration
+        </div>
+
+    </div>
+
+
+    <!-- Form -->
+    <form id="gymForm">
+
+        <div class="section-title">
+            <span></span>
+            Personal Information
+        </div>
+
+        <div class="grid">
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">FULL NAME *</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your full name">
+
+                <span id="nameMsg" class="message"></span>
+            </div>
+
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">EMAIL ADDRESS *</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="example@gmail.com">
+
+                <span id="emailMsg" class="message"></span>
+            </div>
+
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">MOBILE NUMBER *</label>
+
+                <input
+                    type="text"
+                    id="phone"
+                    maxlength="10"
+                    placeholder="10-digit mobile number">
+
+                <span id="phoneMsg" class="message"></span>
+            </div>
+
+
+            <!-- Age -->
+            <div class="form-group">
+                <label for="age">AGE *</label>
+
+                <input
+                    type="number"
+                    id="age"
+                    placeholder="Enter your age">
+
+                <span id="ageMsg" class="message"></span>
+            </div>
+
+
+            <!-- Gender -->
+            <div class="form-group full">
+
+                <label>GENDER *</label>
+
+                <div class="gender-box">
+
+                    <div class="gender-option">
+                        <input type="radio" id="male"
+                               name="gender" value="Male">
+                        <label for="male">Male</label>
+                    </div>
+
+                    <div class="gender-option">
+                        <input type="radio" id="female"
+                               name="gender" value="Female">
+                        <label for="female">Female</label>
+                    </div>
+
+                    <div class="gender-option">
+                        <input type="radio" id="other"
+                               name="gender" value="Other">
+                        <label for="other">Other</label>
+                    </div>
+
+                </div>
+
+                <span id="genderMsg" class="message"></span>
+
+            </div>
+
+        </div>
+
+
+        <div class="section-title">
+            <span></span>
+            Membership & Fitness
+        </div>
+
+
+        <div class="grid">
+
+            <!-- Membership -->
+            <div class="form-group">
+
+                <label for="membership">MEMBERSHIP PLAN *</label>
+
+                <select id="membership">
+
+                    <option value="">Select a membership</option>
+
+                    <option value="Monthly">
+                        Monthly — ₹1,500
+                    </option>
+
+                    <option value="Quarterly">
+                        Quarterly — ₹4,000
+                    </option>
+
+                    <option value="Yearly">
+                        Yearly — ₹12,000
+                    </option>
+
+                </select>
+
+                <span id="membershipMsg" class="message"></span>
+
+            </div>
+
+
+            <!-- Weight -->
+            <div class="form-group">
+
+                <label for="weight">WEIGHT (KG) *</label>
+
+                <input
+                    type="number"
+                    id="weight"
+                    placeholder="Enter your weight">
+
+                <span id="weightMsg" class="message"></span>
+
+            </div>
+
+
+            <!-- Goal -->
+            <div class="form-group">
+
+                <label for="goal">FITNESS GOAL *</label>
+
+                <select id="goal">
+
+                    <option value="">Select your goal</option>
+
+                    <option value="Weight Loss">
+                        Weight Loss
+                    </option>
+
+                    <option value="Muscle Gain">
+                        Muscle Gain
+                    </option>
+
+                    <option value="General Fitness">
+                        General Fitness
+                    </option>
+
+                    <option value="Strength Training">
+                        Strength Training
+                    </option>
+
+                </select>
+
+                <span id="goalMsg" class="message"></span>
+
+            </div>
+
+
+            <!-- Address -->
+            <div class="form-group full">
+
+                <label for="address">ADDRESS *</label>
+
+                <textarea
+                    id="address"
+                    placeholder="Enter your complete address"></textarea>
+
+                <span id="addressMsg" class="message"></span>
+
+            </div>
+
+        </div>
+
+
+        <button type="submit" class="submit-btn">
+            Complete Gym Admission
+        </button>
+
+
+        <div id="result"></div>
+
+    </form>
+
+</div>
+
+
+<!-- Required Student Information -->
+<div class="student-info">
+    ARPEET PATEL<br>
+    PRN: 24070521218
+</div>
+
+
+<script>
+
+/* =========================================
+   ELEMENT REFERENCES
+========================================= */
+
+const form = document.getElementById("gymForm");
+
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const ageInput = document.getElementById("age");
+
+const membershipInput =
+    document.getElementById("membership");
+
+const weightInput =
+    document.getElementById("weight");
+
+const goalInput =
+    document.getElementById("goal");
+
+const addressInput =
+    document.getElementById("address");
+
+
+/* =========================================
+   VALIDATION MESSAGE FUNCTION
+========================================= */
+
+function showMessage(input, messageElement, message, valid) {
+
+    if (valid) {
+
+        input.classList.remove("invalid");
+        input.classList.add("valid");
+
+        messageElement.textContent = "✓ " + message;
+        messageElement.className = "message success";
+
+    } else {
+
+        input.classList.remove("valid");
+        input.classList.add("invalid");
+
+        messageElement.textContent = "✗ " + message;
+        messageElement.className = "message error";
+    }
+}
+
+
+/* =========================================
+   NAME — INPUT EVENT
+========================================= */
+
+nameInput.addEventListener("input", function () {
+
+    const name = nameInput.value.trim();
+
+    const validName =
+        /^[A-Za-z ]{3,}$/.test(name);
+
+    showMessage(
+        nameInput,
+        document.getElementById("nameMsg"),
+        validName
+            ? "Valid name"
+            : "Enter at least 3 letters",
+        validName
+    );
+});
+
+
+/* =========================================
+   EMAIL — BLUR EVENT
+========================================= */
+
+emailInput.addEventListener("blur", function () {
+
+    const email = emailInput.value.trim();
+
+    const validEmail =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    showMessage(
+        emailInput,
+        document.getElementById("emailMsg"),
+        validEmail
+            ? "Valid email address"
+            : "Enter a valid email address",
+        validEmail
+    );
+});
+
+
+/* =========================================
+   PHONE — INPUT EVENT
+========================================= */
+
+phoneInput.addEventListener("input", function () {
+
+    phoneInput.value =
+        phoneInput.value.replace(/\D/g, "");
+
+    const validPhone =
+        /^[6-9][0-9]{9}$/.test(phoneInput.value);
+
+    showMessage(
+        phoneInput,
+        document.getElementById("phoneMsg"),
+        validPhone
+            ? "Valid mobile number"
+            : "Enter a valid 10-digit number",
+        validPhone
+    );
+});
+
+
+/* =========================================
+   AGE — INPUT EVENT
+========================================= */
+
+ageInput.addEventListener("input", function () {
+
+    const age = Number(ageInput.value);
+
+    const validAge =
+        age >= 16 && age <= 80;
+
+    showMessage(
+        ageInput,
+        document.getElementById("ageMsg"),
+        validAge
+            ? "Valid age"
+            : "Age must be between 16 and 80",
+        validAge
+    );
+});
+
+
+/* =========================================
+   MEMBERSHIP — CHANGE EVENT
+========================================= */
+
+membershipInput.addEventListener("change", function () {
+
+    const valid =
+        membershipInput.value !== "";
+
+    showMessage(
+        membershipInput,
+        document.getElementById("membershipMsg"),
+        valid
+            ? "Membership plan selected"
+            : "Please select a membership plan",
+        valid
+    );
+});
+
+
+/* =========================================
+   WEIGHT — INPUT EVENT
+========================================= */
+
+weightInput.addEventListener("input", function () {
+
+    const weight = Number(weightInput.value);
+
+    const validWeight =
+        weight >= 30 && weight <= 250;
+
+    showMessage(
+        weightInput,
+        document.getElementById("weightMsg"),
+        validWeight
+            ? "Valid weight"
+            : "Weight must be between 30 and 250 kg",
+        validWeight
+    );
+});
+
+
+/* =========================================
+   FITNESS GOAL — CHANGE EVENT
+========================================= */
+
+goalInput.addEventListener("change", function () {
+
+    const valid =
+        goalInput.value !== "";
+
+    showMessage(
+        goalInput,
+        document.getElementById("goalMsg"),
+        valid
+            ? "Fitness goal selected"
+            : "Please select a fitness goal",
+        valid
+    );
+});
+
+
+/* =========================================
+   ADDRESS — INPUT EVENT
+========================================= */
+
+addressInput.addEventListener("input", function () {
+
+    const address =
+        addressInput.value.trim();
+
+    const validAddress =
+        address.length >= 10;
+
+    showMessage(
+        addressInput,
+        document.getElementById("addressMsg"),
+        validAddress
+            ? "Address looks good"
+            : "Enter at least 10 characters",
+        validAddress
+    );
+});
+
+
+/* =========================================
+   FORM — SUBMIT EVENT
+========================================= */
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const validName =
+        /^[A-Za-z ]{3,}$/.test(
+            nameInput.value.trim()
+        );
+
+    const validEmail =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+            emailInput.value.trim()
+        );
+
+    const validPhone =
+        /^[6-9][0-9]{9}$/.test(
+            phoneInput.value
+        );
+
+    const validAge =
+        Number(ageInput.value) >= 16 &&
+        Number(ageInput.value) <= 80;
+
+    const validMembership =
+        membershipInput.value !== "";
+
+    const validWeight =
+        Number(weightInput.value) >= 30 &&
+        Number(weightInput.value) <= 250;
+
+    const validGoal =
+        goalInput.value !== "";
+
+    const validAddress =
+        addressInput.value.trim().length >= 10;
+
+    const gender =
+        document.querySelector(
+            'input[name="gender"]:checked'
+        );
+
+
+    /* Gender validation */
+
+    const genderMsg =
+        document.getElementById("genderMsg");
+
+    if (gender) {
+
+        genderMsg.textContent =
+            "✓ Gender selected";
+
+        genderMsg.className =
+            "message success";
+
+    } else {
+
+        genderMsg.textContent =
+            "✗ Please select your gender";
+
+        genderMsg.className =
+            "message error";
+    }
+
+
+    /* Final validation */
+
+    if (
+        validName &&
+        validEmail &&
+        validPhone &&
+        validAge &&
+        gender &&
+        validMembership &&
+        validWeight &&
+        validGoal &&
+        validAddress
+    ) {
+
+        const result =
+            document.getElementById("result");
+
+        result.textContent =
+            "✓ Admission Successful! Welcome to EliteFit Gym, "
+            + nameInput.value + "!";
+
+        result.className =
+            "success-box";
+
+    } else {
+
+        alert(
+            "Please correct all highlighted fields before submitting."
+        );
+    }
+
+});
+
+</script>
+
+</body>
+</html>
+```
