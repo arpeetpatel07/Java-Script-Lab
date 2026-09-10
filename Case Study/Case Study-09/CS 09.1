@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Styling Demonstration</title>
+    
+    <!-- 1. INTERNAL CSS -->
+    <style>
+        :root {
+            --bg-primary: #f4f6f9;
+            --bg-secondary: #ffffff;
+            --text-primary: #333;
+            --text-secondary: #555;
+            --text-muted: #7f8c8d;
+            --border-color: #e0e0e0;
+            --title-color: #2c3e50;
+            --internal-btn-bg: #3498db;
+            --ext-title-color: #27ae60;
+            --ext-btn-bg: #2ecc71;
+            --inline-title-color: #e67e22;
+            --inline-btn-bg: #e67e22;
+        }
+
+        body.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --border-color: #404040;
+            --title-color: #64b5f6;
+            --internal-btn-bg: #1976d2;
+            --ext-title-color: #66bb6a;
+            --ext-btn-bg: #2e7d32;
+            --inline-title-color: #ff9800;
+            --inline-btn-bg: #f57c00;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            transition: background-color 200ms ease, color 200ms ease;
+        }
+        
+        .preferences-panel {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .preferences-panel label {
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .preferences-panel select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 200ms ease, color 200ms ease;
+        }
+        
+        .preferences-panel select:hover {
+            opacity: 0.8;
+        }
+        
+        .section-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: background-color 200ms ease, border-color 200ms ease;
+        }
+        .internal-title {
+            color: var(--title-color);
+            font-size: 24px;
+        }
+        .internal-btn {
+            display: inline-block;
+            background-color: var(--internal-btn-bg);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Combined container to group the external block and the name beneath it */
+        .external-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .external-group .section-box {
+            margin-bottom: 8px; /* Reduced gap between the block and the text below */
+        }
+        
+        /* Small student credits block aligned right underneath the block */
+        .student-credits-small {
+            text-align: right;
+            font-size: 13px;
+            padding-right: 5px;
+            line-height: 1.4;
+        }
+        .student-name {
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        .student-prn {
+            color: var(--text-muted);
+        }
+    </style>
+
+    <!-- 3. EXTERNAL CSS SIMULATION -->
+    <style>
+        .ext-title {
+            color: var(--ext-title-color);
+            font-size: 24px;
+        }
+        .ext-btn {
+            display: inline-block;
+            background-color: var(--ext-btn-bg);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PREFERENCES PANEL FOR THEME AND STORAGE -->
+    <div class="preferences-panel">
+        <label for="theme-select">Theme:</label>
+        <select id="theme-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        
+        <label for="storage-select">Save in:</label>
+        <select id="storage-select">
+            <option value="local">Local Storage</option>
+            <option value="session">Session Storage</option>
+        </select>
+    </div>
+
+    <!-- SECTION 1: INTERNAL CSS -->
+    <div class="section-box">
+        <h2 class="internal-title">Internal css example</h2>
+        <p>This section is styled using rules defined in the head section of this document.</p>
+        <a href="#" class="internal-btn">Click Here</a>
+    </div>
+
+    <!-- SECTION 2: INLINE CSS -->
+    <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h2 style="color: var(--inline-title-color); font-size: 24px; margin-top: 0;">Inline Css</h2>
+        <p style="color: var(--text-secondary); font-size: 16px;">this page was made using inline css</p>
+        <a href="#" style="display: inline-block; background-color: var(--inline-btn-bg); color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">Click Here</a>
+    </div>
+
+    <!-- EXTERNAL CSS CONTAINER GROUP -->
+    <div class="external-group">
+        <!-- SECTION 3: EXTERNAL CSS -->
+        <div class="section-box">
+            <h2 class="ext-title">External Css</h2>
+            <p>This section links to an external file. For this demo code block, the external rule is simulated at the top of the file.</p>
+            <a href="#" class="ext-btn">Click Here</a>
+        </div>
+
+        <!-- SMALL STUDENT CREDITS RIGHT BELOW -->
+        <div class="student-credits-small">
+            <span class="student-name">Arpeet Patel</span> | 
+            <span class="student-prn">PRN: 24070521218</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const themeSelect = document.getElementById('theme-select');
+            const storageSelect = document.getElementById('storage-select');
+            const storageKey = 'css-demo-preferences';
+
+            // Get the appropriate storage object
+            function getStorage(type) {
+                return type === 'session' ? window.sessionStorage : window.localStorage;
+            }
+
+            // Read preferences from storage
+            function readPreferences(type) {
+                try {
+                    const saved = getStorage(type).getItem(storageKey);
+                    return saved ? JSON.parse(saved) : null;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            // Save preferences to the selected storage
+            function savePreferences() {
+                const preferences = {
+                    theme: themeSelect.value,
+                    storage: storageSelect.value
+                };
+                try {
+                    getStorage(storageSelect.value).setItem(storageKey, JSON.stringify(preferences));
+                } catch (error) {
+                    console.log('Storage may be unavailable');
+                }
+                applyTheme(preferences.theme);
+            }
+
+            // Apply the theme by adding/removing dark class
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark');
+                } else {
+                    document.body.classList.remove('dark');
+                }
+            }
+
+            // Load saved preferences on page load
+            function loadPreferences() {
+                // Check sessionStorage first, then localStorage
+                const sessionPreferences = readPreferences('session');
+                const localPreferences = readPreferences('local');
+                const saved = sessionPreferences || localPreferences;
+
+                if (saved) {
+                    themeSelect.value = saved.theme === 'dark' ? 'dark' : 'light';
+                    storageSelect.value = saved.storage === 'session' ? 'session' : 'local';
+                }
+
+                // Apply the theme
+                applyTheme(themeSelect.value);
+            }
+
+            // Event listeners
+            themeSelect.addEventListener('change', savePreferences);
+            storageSelect.addEventListener('change', savePreferences);
+
+            // Load preferences when page loads
+            loadPreferences();
+        })();
+    </script>
+
+</body>
+</html>

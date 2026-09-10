@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Calculator</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --accent-bg: #f0f0f0;
+        }
+
+        body.dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #404040;
+            --accent-bg: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 20px;
+            transition: background-color 200ms ease, color 200ms ease;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .preferences-panel {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .preferences-panel label {
+            color: var(--text-primary);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .preferences-panel select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 200ms ease, color 200ms ease;
+        }
+
+        .preferences-panel select:hover {
+            opacity: 0.8;
+        }
+
+        h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin: 10px 0;
+            padding: 8px;
+            background-color: var(--accent-bg);
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+
+        .student-info {
+            text-align: right;
+            color: var(--text-secondary);
+            font-weight: bold;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- PREFERENCES PANEL FOR THEME AND STORAGE -->
+        <div class="preferences-panel">
+            <label for="theme-select">Theme:</label>
+            <select id="theme-select">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+            
+            <label for="storage-select">Save in:</label>
+            <select id="storage-select">
+                <option value="local">Local Storage</option>
+                <option value="session">Session Storage</option>
+            </select>
+        </div>
+    <h2>Billing Calculator</h2>
+    <script>
+        // Demonstrate const (immutable block-scoped)
+        const GST = 0.18;
+        
+        // Demonstrate var (function-scoped/global)
+        var coustomername = prompt("Enter your name:");
+        var productname = prompt("Enter the name of product:");
+        var quantity = Number(prompt("Enter quantity: "));
+        var price = Number(prompt("Enter Price per unit:"));
+
+        // Demonstrate let (mutable block-scoped)
+        let total = quantity * price;
+        let getAmount = total * GST;
+        let finalAmount = getAmount + total;
+
+        // Creating the bill object
+        const bill = {
+            coustomer: coustomername,
+            product: productname,
+            quantity,
+            price,
+            total,
+            getAmount,
+            finalbill: finalAmount
+        };
+
+        // Demonstrate Destructuring (with default value fallback and lowercase match)
+        const {
+            coustomer,
+            product,
+            getAmount: gstAmount = total * GST,
+            finalbill
+        } = bill;
+
+        // Demonstrate Template Literals
+        document.write('<h3> Your Bill </h3>');
+        document.write(`<p>Customer Name: ${coustomer}</p> `);
+        document.write(`<p>Product: ${product}</p> `);
+        document.write(`<p>Quantity: ${quantity}</p> `);
+        document.write(`<p>Price per Unit: ${price}</p> `);
+        document.write(`<p>Total Amount: ${total}</p> `);
+        document.write(`<p>GST (18%): ${gstAmount}</p> `);
+        document.write(`<p>Final Amount: ${finalbill}</p> `);
+
+        // Added Name and PRN at the bottom of everything
+        document.write(`<div class="student-info"><p>Arpeet Patel - PRN: 24070521218</p></div>`);
+
+    </script>
+    </div>
+
+    <script>
+        (function() {
+            const themeSelect = document.getElementById('theme-select');
+            const storageSelect = document.getElementById('storage-select');
+            const storageKey = 'billing-calculator-preferences';
+
+            // Get the appropriate storage object
+            function getStorage(type) {
+                return type === 'session' ? window.sessionStorage : window.localStorage;
+            }
+
+            // Read preferences from storage
+            function readPreferences(type) {
+                try {
+                    const saved = getStorage(type).getItem(storageKey);
+                    return saved ? JSON.parse(saved) : null;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            // Save preferences to the selected storage
+            function savePreferences() {
+                const preferences = {
+                    theme: themeSelect.value,
+                    storage: storageSelect.value
+                };
+                try {
+                    getStorage(storageSelect.value).setItem(storageKey, JSON.stringify(preferences));
+                } catch (error) {
+                    console.log('Storage may be unavailable');
+                }
+                applyTheme(preferences.theme);
+            }
+
+            // Apply the theme by adding/removing dark class
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark');
+                } else {
+                    document.body.classList.remove('dark');
+                }
+            }
+
+            // Load saved preferences on page load
+            function loadPreferences() {
+                // Check sessionStorage first, then localStorage
+                const sessionPreferences = readPreferences('session');
+                const localPreferences = readPreferences('local');
+                const saved = sessionPreferences || localPreferences;
+
+                if (saved) {
+                    themeSelect.value = saved.theme === 'dark' ? 'dark' : 'light';
+                    storageSelect.value = saved.storage === 'session' ? 'session' : 'local';
+                }
+
+                // Apply the theme
+                applyTheme(themeSelect.value);
+            }
+
+            // Event listeners
+            themeSelect.addEventListener('change', savePreferences);
+            storageSelect.addEventListener('change', savePreferences);
+
+            // Load preferences when page loads
+            loadPreferences();
+        })();
+    </script>
+
+</body>
+</html>
