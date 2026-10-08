@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3eb">
+  <title>The Analog Garage — 80s Classics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f3eb;
+      --paper-deep: #eeeadf;
+      --card: #fffdf8;
+      --ink: #24251f;
+      --muted: #77776e;
+      --line: #ded9ca;
+      --accent: #a44c35;
+      --accent-dark: #843a29;
+      --olive: #68715c;
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
+      --mono: "DM Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px max(5vw, 22px);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font: 10px var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .live-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #73845f;
+      box-shadow: 0 0 0 3px #73845f22;
+    }
+    .masthead {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 30px max(5vw, 22px) 21px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font: 600 18px var(--serif);
+      letter-spacing: -.03em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand span { color: var(--accent); }
+    .nav-note { color: var(--muted); font-size: 12px; }
+    .hero {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 34px max(5vw, 22px) 64px;
+      display: grid;
+      grid-template-columns: 1fr .78fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .eyebrow {
+      color: var(--accent);
+      font: 500 10px var(--mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 700px;
+      margin: 17px 0 19px;
+      font: 500 clamp(44px, 6.5vw, 82px)/.99 var(--serif);
+      letter-spacing: -.055em;
+    }
+    h1 em { color: var(--accent); font-weight: 500; }
+    .hero-copy {
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
+    .button {
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fffdf8;
+      padding: 12px 17px;
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: .06em;
+      transition: background .2s, transform .2s;
+    }
+    .button:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+    .text-button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 10px 2px;
+      font-size: 11px;
+    }
+    .text-button:hover { color: var(--accent); }
+    .hero-art {
+      position: relative;
+      min-height: 290px;
+      overflow: hidden;
+      background: #ded9ca;
+      isolation: isolate;
+    }
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, #16171100 35%, #1617119c 100%),
+        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85") center 56%/cover;
+      transform: scale(1.01);
+    }
+    .hero-caption {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 19px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      color: white;
+    }
+    .hero-caption strong { display: block; font: 500 20px var(--serif); }
+    .hero-caption span { font: 9px var(--mono); letter-spacing: .12em; opacity: .8; }
+    .collection {
+      background: var(--paper-deep);
+      border-top: 1px solid var(--line);
+      padding: 56px max(5vw, 22px) 90px;
+    }
+    .collection-inner { max-width: 1300px; margin: 0 auto; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 26px;
+    }
+    h2 { margin: 9px 0 0; font: 500 clamp(29px, 4vw, 43px) var(--serif); letter-spacing: -.035em; }
+    .collection-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; }
+    .search-wrap::before {
+      content: "⌕";
+      position: absolute;
+      top: 7px;
+      left: 12px;
+      color: var(--muted);
+      font-size: 19px;
+    }
+    .search-wrap input, .collection-tools select {
+      height: 39px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--card);
+      color: var(--ink);
+      outline: none;
+      font-size: 11px;
+    }
+    .search-wrap input { width: 190px; padding: 0 12px 0 35px; }
+    .collection-tools select { padding: 0 28px 0 12px; }
+    .search-wrap input:focus, .collection-tools select:focus { border-color: var(--accent); }
+    .filter-row {
+      display: flex;
+      gap: 7px;
+      margin: 0 0 26px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: 10px var(--mono);
+      transition: all .18s;
+    }
+    .filter-chip:hover, .filter-chip.active { background: var(--ink); border-color: var(--ink); color: var(--card); }
+    .results-line {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font: 9px var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    #loadStatus { color: var(--olive); }
+    .car-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .car-card {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid #e5e0d4;
+      cursor: pointer;
+      transition: transform .22s, box-shadow .22s;
+    }
+    .car-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px #28261c12; }
+    .car-image {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      background: #ded9ca;
+    }
+    .car-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .car-card:hover .car-image img { transform: scale(1.04); }
+    .year-tag {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      padding: 7px 9px;
+      background: #fffdf0e8;
+      color: var(--ink);
+      font: 9px var(--mono);
+    }
+    .favorite {
+      position: absolute;
+      top: 10px;
+      right: 11px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: #fffdf0e8;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 17px;
+      line-height: 1;
+    }
+    .favorite.is-favorite { color: var(--accent); }
+    .car-info { padding: 17px 18px 18px; }
+    .car-make { color: var(--muted); font: 9px var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .car-info h3 { margin: 7px 0 13px; font: 500 22px var(--serif); letter-spacing: -.02em; }
+    .car-meta { display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font: 9px var(--mono); }
+    .empty-state {
+      grid-column: 1/-1;
+      padding: 48px 20px;
+      text-align: center;
+      border: 1px dashed #c9c2b2;
+      color: var(--muted);
+      font: 13px var(--serif);
+    }
+    footer {
+      max-width: 1300px;
+      margin: auto;
+      padding: 24px max(5vw, 22px) 95px;
+      color: var(--muted);
+      font: 9px var(--mono);
+      letter-spacing: .08em;
+    }
+    .credit {
+      position: fixed;
+      right: 20px;
+      bottom: 18px;
+      z-index: 5;
+      padding: 10px 13px;
+      border: 1px solid #c9c2b2;
+      background: #fffdf0f2;
+      box-shadow: 0 4px 14px #24251f12;
+      color: var(--ink);
+      font: 9px/1.65 var(--mono);
+      letter-spacing: .04em;
+      text-align: right;
+    }
+    .credit strong { display: block; font-weight: 500; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #171812a8;
+    }
+    .modal.open { display: flex; }
+    .modal-panel {
+      position: relative;
+      width: min(720px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--card);
+    }
+    .modal-panel img { display: block; width: 100%; height: 300px; object-fit: cover; background: var(--paper-deep); }
+    .modal-content { padding: 24px 28px 29px; }
+    .modal-content h2 { font-size: 36px; }
+    .modal-content p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .modal-specs { display: flex; gap: 28px; margin-top: 20px; color: var(--muted); font: 10px var(--mono); }
+    .modal-specs strong { display: block; margin-top: 6px; color: var(--ink); font-weight: 500; }
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      background: var(--card);
+      cursor: pointer;
+      font-size: 20px;
+    }
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 20px; }
+      .hero-art { min-height: 320px; }
+      .car-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 580px) {
+      .topline { font-size: 8px; }
+      .nav-note { display: none; }
+      .masthead { padding-top: 22px; }
+      .hero { padding-bottom: 42px; }
+      .hero-art { min-height: 240px; }
+      .section-head { align-items: start; flex-direction: column; }
+      .collection-tools { width: 100%; }
+      .search-wrap { flex: 1; }
+      .search-wrap input { width: 100%; }
+      .collection-tools select { flex: 1; }
+      .car-grid { grid-template-columns: 1fr; }
+      .car-image { height: 230px; }
+      .collection { padding-top: 42px; }
+      .modal-panel img { height: 220px; }
+      .credit { right: 10px; bottom: 10px; font-size: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <span><i class="live-dot"></i>Analog hours · <time id="liveClock">--:--:--</time></span>
+    <span>Curated classics · Est. 1980–1989</span>
+  </div>
+  <header class="masthead">
+    <a class="brand" href="#" aria-label="The Analog Garage home">THE ANALOG <span>GARAGE</span></a>
+    <div class="nav-note">A little collection of legends, built to be driven.</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">The decade that dared</div>
+        <h1>Icons from the<br><em>analog age.</em></h1>
+        <p class="hero-copy">Before screens took over the dashboard, the road was all feel. Meet the bold shapes, big engines and unforgettable machines that made the eighties.</p>
+        <div class="hero-actions">
+          <button class="button" id="exploreButton">Explore the collection <span aria-hidden="true">↘</span></button>
+          <button class="text-button" id="favoritesButton">♡ Your garage (<span id="favoriteCount">0</span>)</button>
+        </div>
+      </div>
+      <div class="hero-art" role="img" aria-label="A timeless classic sports car on the road">
+        <div class="hero-caption">
+          <div><span>THE OPEN ROAD</span><strong>Made for the long way home.</strong></div>
+          <span>01 / 08</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="collection" id="collection">
+      <div class="collection-inner">
+        <div class="section-head">
+          <div><div class="eyebrow">The collection</div><h2>Eighties, in motion.</h2></div>
+          <div class="collection-tools">
+            <label class="search-wrap"><input id="searchInput" type="search" placeholder="Find a car..." aria-label="Search cars"></label>
+            <select id="sortSelect" aria-label="Sort cars">
+              <option value="year-asc">Year: oldest first</option>
+              <option value="year-desc">Year: newest first</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-row" aria-label="Filter cars by decade">
+          <button class="filter-chip active" data-filter="all">All icons</button>
+          <button class="filter-chip" data-filter="1980">1980–83</button>
+          <button class="filter-chip" data-filter="1984">1984–86</button>
+          <button class="filter-chip" data-filter="1987">1987–89</button>
+        </div>
+        <div class="results-line"><span id="resultCount">Loading collection…</span><span id="loadStatus" role="status">Connecting to archive</span></div>
+        <div class="car-grid" id="carGrid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+  <footer>THE ANALOG GARAGE &nbsp;·&nbsp; A celebration of the machines that made an era.</footer>
+
+  <aside class="credit" aria-label="Student information">
+    <strong>ARPEET PATEL</strong>
+    PRN: 24070521218
+  </aside>
+
+  <div class="modal" id="carModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-panel">
+      <button class="close-modal" aria-label="Close details">&times;</button>
+      <img id="modalImage" src="" alt="">
+      <div class="modal-content">
+        <div class="eyebrow" id="modalMake"></div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <div class="modal-specs">
+          <div>YEAR<strong id="modalYear"></strong></div>
+          <div>ENGINE<strong id="modalEngine"></strong></div>
+          <div>POWER<strong id="modalPower"></strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function () {
+      "use strict";
+
+      const fallbackCars = [
+        { id: "porsche-911", make: "Porsche", model: "911 Carrera", year: 1984, engine: "3.2L Flat-six", power: "231 hp", category: "1984", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=85", description: "The 3.2 Carrera brought a charismatic flat-six and timeless silhouette together. A true driver's car, its air-cooled character became the stuff of legend." },
+        { id: "ferrari-testarossa", make: "Ferrari", model: "Testarossa", year: 1986, engine: "4.9L Flat-12", power: "385 hp", category: "1984", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=85", description: "Wide, dramatic and unmistakably Italian, the Testarossa turned every entrance into a moment. Its side strakes and twelve-cylinder soundtrack defined an era." },
+        { id: "bmw-m3", make: "BMW", model: "M3 (E30)", year: 1986, engine: "2.3L Inline-4", power: "197 hp", category: "1984", image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1000&q=85", description: "Born for touring-car competition, the first M3 paired a purposeful shape with a high-revving engine. It remains one of the most loved driver's cars ever made." },
+        { id: "lamborghini-countach", make: "Lamborghini", model: "Countach LP5000 QV", year: 1988, engine: "5.2L V12", power: "449 hp", category: "1987", image: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1000&q=85", description: "A wedge-shaped poster car brought to life: the Countach made the supercar feel like something from another planet, with a V12 to match." },
+        { id: "mercedes-560sl", make: "Mercedes-Benz", model: "560 SL", year: 1987, engine: "5.6L V8", power: "227 hp", category: "1987", image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1000&q=85", description: "Elegant roadster proportions, effortless V8 power and a beautifully finished cabin made the 560 SL the grand tourer of choice." },
+        { id: "mazda-rx7", make: "Mazda", model: "RX-7 Turbo II", year: 1987, engine: "1.3L Rotary Turbo", power: "182 hp", category: "1987", image: "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1000&q=85", description: "Light, balanced and delightfully different, the RX-7 paired a turbocharged rotary engine with the sort of handling that made every winding road an occasion." },
+        { id: "toyota-supra", make: "Toyota", model: "Supra Turbo", year: 1989, engine: "3.0L Inline-6 Turbo", power: "232 hp", category: "1987", image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=85", description: "The final A70 Supra was a polished grand tourer with serious turbocharged pace. Its smooth inline-six and pop-up headlamps made it an instant classic." },
+        { id: "audi-quattro", make: "Audi", model: "Quattro", year: 1981, engine: "2.1L Inline-5 Turbo", power: "200 hp", category: "1980", image: "https://images.unsplash.com/photo-1607603750909-408e193868c7?auto=format&fit=crop&w=1000&q=85", description: "The rally-bred Quattro brought permanent all-wheel drive to the performance-car conversation and changed the sport—and the road—forever." }
+      ];
+
+      let cars = [];
+      let selectedFilter = "all";
+      let favoritesOnly = false;
+      let favorites = [];
+      const storageKey = "analogGarageFavorites";
+
+      try {
+        const storedFavorites = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (Array.isArray(storedFavorites) && storedFavorites.every(id => typeof id === "string")) {
+          favorites = storedFavorites;
+        }
+      } catch (error) {
+        $("#loadStatus").text("Favorites unavailable");
+        console.warn("Could not read saved garage favorites.", error);
+      }
+
+      function updateClock() {
+        $("#liveClock").text(new Intl.DateTimeFormat(undefined, {
+          hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+        }).format(new Date()));
+      }
+
+      function safeText(value) {
+        return String(value == null ? "" : value);
+      }
+
+      function renderCars() {
+        const query = $("#searchInput").val().trim().toLowerCase();
+        const sort = $("#sortSelect").val();
+        let visibleCars = cars.filter(car => {
+          const matchesQuery = [car.make, car.model, car.year].join(" ").toLowerCase().includes(query);
+          const matchesFilter = selectedFilter === "all" ||
+            (selectedFilter === "1980" && car.year <= 1983) ||
+            (selectedFilter === "1984" && car.year >= 1984 && car.year <= 1986) ||
+            (selectedFilter === "1987" && car.year >= 1987);
+          return matchesQuery && matchesFilter && (!favoritesOnly || favorites.includes(car.id));
+        });
+
+        visibleCars = visibleCars.slice().sort((a, b) => {
+          if (sort === "year-desc") return b.year - a.year;
+          if (sort === "name") return a.make.localeCompare(b.make) || a.model.localeCompare(b.model);
+          return a.year - b.year;
+        });
+
+        const $grid = $("#carGrid").empty();
+        $("#resultCount").text(visibleCars.length + (visibleCars.length === 1 ? " motor car" : " motor cars"));
+        $("#favoriteCount").text(favorites.length);
+
+        if (!visibleCars.length) {
+          $("<div>").addClass("empty-state")
+            .text(favoritesOnly ? "Your garage is waiting. Tap the heart on a car to save it here." : "No cars found. Try another search or filter.")
+            .appendTo($grid);
+          return;
+        }
+
+        visibleCars.forEach(car => {
+          const $card = $("<article>").addClass("car-card").attr("data-car-id", car.id).attr("tabindex", "0").attr("role", "button")
+            .attr("aria-label", "View details for " + car.year + " " + car.make + " " + car.model);
+          const $image = $("<div>").addClass("car-image");
+          $("<img>").attr({ src: car.image, alt: car.year + " " + car.make + " " + car.model, loading: "lazy" })
+            .on("error", function () {
+              $(this).attr("src", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=80");
+            }).appendTo($image);
+          $("<span>").addClass("year-tag").text(car.year).appendTo($image);
+          $("<button>").addClass("favorite" + (favorites.includes(car.id) ? " is-favorite" : ""))
+            .attr({ type: "button", "aria-label": (favorites.includes(car.id) ? "Remove from" : "Add to") + " your garage", "aria-pressed": favorites.includes(car.id) })
+            .text(favorites.includes(car.id) ? "♥" : "♡").appendTo($image);
+
+          const $info = $("<div>").addClass("car-info");
+          $("<div>").addClass("car-make").text(car.make).appendTo($info);
+          $("<h3>").text(car.model).appendTo($info);
+          const $meta = $("<div>").addClass("car-meta");
+          $("<span>").text(car.engine).appendTo($meta);
+          $("<span>").text(car.power).appendTo($meta);
+          $info.append($meta);
+          $card.append($image, $info).appendTo($grid);
+        });
+      }
+
+      function loadCars() {
+        $("#loadStatus").text("Refreshing archive…");
+        $.ajax({
+          url: "cars.json",
+          dataType: "json",
+          cache: false,
+          timeout: 5000
+        }).done(function (data) {
+          if (!Array.isArray(data) || !data.every(car =>
+            car && typeof car.id === "string" && typeof car.make === "string" &&
+            typeof car.model === "string" && Number.isFinite(Number(car.year)) &&
+            typeof car.image === "string"
+          )) {
+            $("#loadStatus").text("Archive data invalid · using local collection");
+            cars = fallbackCars;
+          } else {
+            cars = data.map(car => Object.assign({}, car, { year: Number(car.year) }));
+            $("#loadStatus").text("Archive synced · " + new Date().toLocaleTimeString());
+          }
+          renderCars();
+        }).fail(function (_xhr, status, error) {
+          cars = fallbackCars;
+          $("#loadStatus").text("Offline archive · showing saved collection");
+          if (status !== "timeout" && status !== "error") {
+            console.warn("Could not refresh the car archive:", error || status);
+          }
+          renderCars();
+        });
+      }
+
+      function openCar(carId) {
+        const car = cars.find(item => item.id === carId);
+        if (!car) return;
+        $("#modalImage").attr({ src: car.image, alt: car.year + " " + car.make + " " + car.model });
+        $("#modalMake").text(car.make + " · " + car.year);
+        $("#modalTitle").text(car.model);
+        $("#modalDescription").text(car.description);
+        $("#modalYear").text(car.year);
+        $("#modalEngine").text(car.engine);
+        $("#modalPower").text(car.power);
+        $("#carModal").addClass("open");
+        $("body").css("overflow", "hidden");
+        $(".close-modal").trigger("focus");
+      }
+
+      function closeModal() {
+        $("#carModal").removeClass("open");
+        $("body").css("overflow", "");
+      }
+
+      $("#exploreButton").on("click", function () {
+        $("#collection")[0].scrollIntoView({ behavior: "smooth" });
+      });
+
+      $("#searchInput").on("input", renderCars);
+      $("#sortSelect").on("change", renderCars);
+      $(".filter-chip").on("click", function () {
+        selectedFilter = String($(this).data("filter"));
+        $(".filter-chip").removeClass("active");
+        $(this).addClass("active");
+        renderCars();
+      });
+
+      $("#favoritesButton").on("click", function () {
+        favoritesOnly = !favoritesOnly;
+        $(this).toggleClass("active", favoritesOnly);
+        $("#collection")[0].scrollIntoView({ behavior: "smooth" });
+        renderCars();
+      });
+
+      $("#carGrid").on("click", ".favorite", function (event) {
+        event.stopPropagation();
+        const carId = $(this).closest(".car-card").data("car-id");
+        favorites = favorites.includes(carId) ? favorites.filter(id => id !== carId) : favorites.concat(carId);
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(favorites));
+        } catch (error) {
+          $("#loadStatus").text("Could not save garage favorites");
+          console.error("Could not save garage favorites.", error);
+        }
+        renderCars();
+      });
+
+      $("#carGrid").on("click", ".car-card", function () {
+        openCar(String($(this).data("car-id")));
+      });
+      $("#carGrid").on("keydown", ".car-card", function (event) {
+        if ((event.key === "Enter" || event.key === " ") && !$(event.target).hasClass("favorite")) {
+          event.preventDefault();
+          openCar(String($(this).data("car-id")));
+        }
+      });
+      $(".close-modal").on("click", closeModal);
+      $("#carModal").on("click", function (event) {
+        if (event.target === this) closeModal();
+      });
+      $(document).on("keydown", function (event) {
+        if (event.key === "Escape" && $("#carModal").hasClass("open")) closeModal();
+      });
+
+      updateClock();
+      window.setInterval(updateClock, 1000);
+      loadCars();
+    });
+  </script>
+</body>
+</html>
